@@ -32,7 +32,7 @@ if __name__ == '__main__':
         threads.append(t)
     for t in threads:
         time.sleep(ThinkTime)
-        # print "thread %s" %t #打印线程
+        # print "thread %s" %t # 打印线程
         t.setDaemon(True)
         t.start()
     t.join()
