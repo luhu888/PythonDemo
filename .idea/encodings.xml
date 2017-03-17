@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/APItest2.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bingfa.py" charset="GBK" />
     <file url="file://$PROJECT_DIR$/bingfa2.py" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/number.py" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/districtcode" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/number.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/shua.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test6.py" charset="GBK" />
     <file url="file://$PROJECT_DIR$/test8.py" charset="UTF-8" />
