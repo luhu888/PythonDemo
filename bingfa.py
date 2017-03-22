@@ -1,27 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf_8 -*-
 import threading, time, httplib
-HOST = "192.168.1.102";    # Ö÷»úµØÖ· ÀıÈç192.168.1.101
-PORT = 80    # ¶Ë¿Ú
-URI = "/api/#/index"    # Ïà¶ÔµØÖ·,¼Ó²ÎÊı·ÀÖ¹»º´æ£¬·ñÔò¿ÉÄÜ»á·µ»Ø304
-TOTAL = 0   # ×ÜÊı
-SUCC = 0    # ÏìÓ¦³É¹¦Êı
-FAIL = 0    # ÏìÓ¦Ê§°ÜÊı
-EXCEPT = 0  # ÏìÓ¦Òì³£Êı
-MAXTIME = 0    # ×î´óÏìÓ¦Ê±¼ä
-MINTIME = 100    # ×îĞ¡ÏìÓ¦Ê±¼ä£¬³õÊ¼ÖµÎª100Ãë
-GT3 = 0    # Í³¼Æ3ÃëÄÚÏìÓ¦µÄ
-LT3 = 0     # Í³¼Æ´óÓÚ3ÃëÏìÓ¦µÄ
-# ´´½¨Ò»¸ö threading.Thread µÄÅÉÉúÀà
+HOST = "192.168.1.102";    # ä¸»æœºåœ°å€ ä¾‹å¦‚192.168.1.101
+PORT = 8000    # ç«¯å£
+URI = "/user/"    # ç›¸å¯¹åœ°å€,åŠ å‚æ•°é˜²æ­¢ç¼“å­˜ï¼Œå¦åˆ™å¯èƒ½ä¼šè¿”å›304
+TOTAL = 1   # æ€»æ•°
+SUCC = 0    # å“åº”æˆåŠŸæ•°
+FAIL = 0    # å“åº”å¤±è´¥æ•°
+EXCEPT = 0  # å“åº”å¼‚å¸¸æ•°
+MAXTIME = 0    # æœ€å¤§å“åº”æ—¶é—´
+MINTIME = 100    # æœ€å°å“åº”æ—¶é—´ï¼Œåˆå§‹å€¼ä¸º100ç§’
+GT3 = 0    # ç»Ÿè®¡3ç§’å†…å“åº”çš„
+LT3 = 0     # ç»Ÿè®¡å¤§äº3ç§’å“åº”çš„
+# åˆ›å»ºä¸€ä¸ª threading.Thread çš„æ´¾ç”Ÿç±»
 
 
 class RequestThread(threading.Thread):
-    # ¹¹Ôìº¯Êı
+    # æ„é€ å‡½æ•°
     def __init__(self, thread_name):
         threading.Thread.__init__(self)
         self.test_count = 0
 
-    # Ïß³ÌÔËĞĞµÄÈë¿Úº¯Êı
+    # çº¿ç¨‹è¿è¡Œçš„å…¥å£å‡½æ•°
     def run(self):
 
         self.test_performace()
@@ -75,11 +75,11 @@ class RequestThread(threading.Thread):
             if ts < MINTIME:
                 MINTIME = ts
 
-# main ´úÂë¿ªÊ¼
+# main ä»£ç å¼€å§‹
 print '===========task start==========='
-# ¿ªÊ¼µÄÊ±¼ä
+# å¼€å§‹çš„æ—¶é—´
 start_time = time.time()
-# ²¢·¢µÄÏß³ÌÊı
+# å¹¶å‘çš„çº¿ç¨‹æ•°
 thread_count = 29
 
 i = 0
@@ -88,14 +88,14 @@ while i <= thread_count:
     t.start()
     i += 1
 t = 0
-# ²¢·¢ÊıËùÓĞ¶¼Íê³É»ò´óÓÚ50Ãë¾Í½áÊø
+# å¹¶å‘æ•°æ‰€æœ‰éƒ½å®Œæˆæˆ–å¤§äº50ç§’å°±ç»“æŸ
 while TOTAL < thread_count | t > 50:
         print "total:%d,succ:%d,fail:%d,except:%d\n" % (TOTAL, SUCC, FAIL, EXCEPT)
         print HOST, URI
         t += 1
         time.sleep(1)
 print '===========task end==========='
-print "total:%d,succ:%d,fail:%d,except:%d"%(TOTAL, SUCC, FAIL, EXCEPT)
+print "total:%d,succ:%d,fail:%d,except:%d"% (TOTAL, SUCC, FAIL, EXCEPT)
 print 'response maxtime:', MAXTIME
 print 'response mintime', MINTIME
 print 'great than 3 seconds:%d,percent:%0.2f' % (GT3, float(GT3)/TOTAL)

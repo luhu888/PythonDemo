@@ -1,51 +1,61 @@
 #!/usr/bin/env python
 # -*- coding: utf_8 -*-
+import random
 import requests
 import datetime
 import time
 import threading
+import number
+'''å¹¶å‘æµ‹è¯•API'''
 
 
 class url_request():
     times = []
     error = []
 
-    def req(self, AppID, url):
+    def req(self, name, password, gender):
         myreq = url_request()
-        headers = {'User-Agent': 'Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 4 Build/JOP40D)'
-                                 ' AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19'}
-        payload = {'AppID': AppID, 'CurrentURL': url}
-        r = requests.post("http://xx.xxx.com/WeiXinJSAccessToken/json/WeChatJSTicket", headers=headers, data=payload)
-        ResponseTime = float(r.elapsed.microseconds)/1000     # »ñÈ¡ÏìÓ¦Ê±¼ä£¬µ¥Î»ms
-        myreq.times.append(ResponseTime)    # ½«ÏìÓ¦Ê±¼äĞ´ÈëÊı×é
+        headers = {}
+        payload = {"username": name, "password": password, "gender": gender}
+        r = requests.post("http://192.168.1.102:8000/user/", headers=headers, data=payload)
+        # print r.status_code
+        # print name
+        ResponseTime = float(r.elapsed.microseconds)/1000     # è·å–å“åº”æ—¶é—´ï¼Œå•ä½ms
+        myreq.times.append(ResponseTime)    # å°†å“åº”æ—¶é—´å†™å…¥æ•°ç»„
         if r.status_code != 200:
             myreq.error.append("0")
+
+
 if __name__ == '__main__':
     myreq = url_request()
     threads = []
     starttime = datetime.datetime.now()
     print "request start time %s" % starttime
-    nub = 50    # ÉèÖÃ²¢·¢Ïß³ÌÊı
-    ThinkTime = 0.5     # ÉèÖÃË¼¿¼Ê±¼ä
+
+    nub = 10    # è®¾ç½®å¹¶å‘çº¿ç¨‹æ•°
+    ThinkTime = 0.5     # è®¾ç½®æ€è€ƒæ—¶é—´
     for i in range(1, nub+1):
-        t = threading.Thread(target=myreq.req, args=('12', 'http://m.ctrip.com/webapp/cpage/#mypoints'))
+        name = number.full_name()
+        password = number.gennerator()
+        gender = random.randint(0, 1)
+        t = threading.Thread(target=myreq.req, args=(name, password, gender))
         threads.append(t)
     for t in threads:
         time.sleep(ThinkTime)
-        # print "thread %s" %t # ´òÓ¡Ïß³Ì
+        # print "thread %s" % t   # æ‰“å°çº¿ç¨‹
         t.setDaemon(True)
         t.start()
     t.join()
     endtime = datetime.datetime.now()
-    print "request end time %s" % endtime
+    print "request end   time %s" % endtime
     time.sleep(3)
-    AverageTime = "{:.3f}".format(float(sum(myreq.times))/float(len(myreq.times)))    # ¼ÆËãÊı×éµÄÆ½¾ùÖµ£¬±£Áô3Î»Ğ¡Êı
-    print "Average Response Time %s ms" % AverageTime   # ´òÓ¡Æ½¾ùÏìÓ¦Ê±¼ä
+    AverageTime = "{:.3f}".format(float(sum(myreq.times))/float(len(myreq.times)))    # è®¡ç®—æ•°ç»„çš„å¹³å‡å€¼ï¼Œä¿ç•™3ä½å°æ•°
+    print "å¹³å‡å“åº”æ—¶é•¿ %s ms" % AverageTime   # æ‰“å°å¹³å‡å“åº”æ—¶é—´
     usetime = str(endtime - starttime)
     hour = usetime.split(':').pop(0)
     minute = usetime.split(':').pop(1)
     second = usetime.split(':').pop(2)
-    totaltime = float(hour)*60*60 + float(minute)*60 + float(second)    # ¼ÆËã×ÜµÄË¼¿¼Ê±¼ä+ÇëÇóÊ±¼ä
-    print "Concurrent processing %s" % nub    # ´òÓ¡²¢·¢Êı
-    print "use total time %s s" % (totaltime-float(nub*ThinkTime))    # ´òÓ¡×Ü¹²ÏûºÄµÄÊ±¼ä
-    print "fail request %s" % myreq.error.count("0")     # ´òÓ¡´íÎóÇëÇóÊı
+    totaltime = float(hour)*60*60 + float(minute)*60 + float(second)    # è®¡ç®—æ€»çš„æ€è€ƒæ—¶é—´+è¯·æ±‚æ—¶é—´
+    print "å¹¶å‘æ•° %s" % nub    # æ‰“å°å¹¶å‘æ•°
+    print "æ€»è€—æ—¶ %s s" % (totaltime-float(nub*ThinkTime))    # æ‰“å°æ€»å…±æ¶ˆè€—çš„æ—¶é—´
+    print "è¯·æ±‚å¤±è´¥æ•° %s" % myreq.error.count("0")     # æ‰“å°é”™è¯¯è¯·æ±‚æ•°
