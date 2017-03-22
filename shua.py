@@ -11,7 +11,7 @@ for i in range(1, 20):
     name = number.full_name()
     password = number.gennerator()
     headers = {}
-    url = 'http://192.168.1.102:8000/user/'
+    url = 'http://192.168.1.105:8000/user/'
     data = {
         "username": name,
         "password": password,

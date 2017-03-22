@@ -17,7 +17,7 @@ class url_request():
         myreq = url_request()
         headers = {}
         payload = {"username": name, "password": password, "gender": gender}
-        r = requests.post("http://192.168.1.102:8000/user/", headers=headers, data=payload)
+        r = requests.post("http://192.168.0.105:8000/user/", headers=headers, data=payload)
         # print r.status_code
         # print name
         ResponseTime = float(r.elapsed.microseconds)/1000     # 获取响应时间，单位ms
